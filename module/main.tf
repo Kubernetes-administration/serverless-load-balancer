@@ -24,7 +24,10 @@ module "lb-http" {
       groups = [
         {
           group = module.network_group.endpoint
-        }
+        },
+        # {
+        #   group = module.instance_group.group
+        # }
       ]
 
       iap_config = {
@@ -40,10 +43,18 @@ module "network_group" {
   source = "../cloud-run"
 
   project               = var.project
-  name                  = var.name
+  name                  = "${var.name}-network-group"
   network_endpoint_type = var.network_endpoint_type
   region                = var.region
   image                 = var.image
+}
+
+module "instance_group" {
+  source = "../instance-group"
+
+  project = var.project
+  name    = "${var.name}-instance-group"
+  zone    = var.zone
 }
 
 

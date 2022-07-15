@@ -21,3 +21,7 @@ variable "region" {
 variable "image" {
   type = string
 }
+
+variable "zone" {
+  type = string
+}
