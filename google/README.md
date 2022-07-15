@@ -13,6 +13,7 @@
 | <a name="provider_google"></a> [google](#provider\_google) | >= 3.53, < 5.0 |
 | <a name="provider_google-beta"></a> [google-beta](#provider\_google-beta) | >= 3.53, < 5.0 |
 | <a name="provider_random"></a> [random](#provider\_random) | n/a |
+| <a name="provider_var.project"></a> [var.project](#provider\_var.project) | n/a |
 
 ## Modules
 
@@ -22,20 +23,17 @@ No modules.
 
 | Name | Type |
 |------|------|
-| [google-beta_google_compute_backend_service.default](https://registry.terraform.io/providers/hashicorp/google-beta/latest/docs/resources/google_compute_backend_service) | resource |
 | [google-beta_google_compute_global_address.default](https://registry.terraform.io/providers/hashicorp/google-beta/latest/docs/resources/google_compute_global_address) | resource |
-| [google-beta_google_compute_global_address.default_ipv6](https://registry.terraform.io/providers/hashicorp/google-beta/latest/docs/resources/google_compute_global_address) | resource |
-| [google-beta_google_compute_global_forwarding_rule.http](https://registry.terraform.io/providers/hashicorp/google-beta/latest/docs/resources/google_compute_global_forwarding_rule) | resource |
-| [google-beta_google_compute_global_forwarding_rule.http_ipv6](https://registry.terraform.io/providers/hashicorp/google-beta/latest/docs/resources/google_compute_global_forwarding_rule) | resource |
-| [google-beta_google_compute_global_forwarding_rule.https](https://registry.terraform.io/providers/hashicorp/google-beta/latest/docs/resources/google_compute_global_forwarding_rule) | resource |
-| [google-beta_google_compute_global_forwarding_rule.https_ipv6](https://registry.terraform.io/providers/hashicorp/google-beta/latest/docs/resources/google_compute_global_forwarding_rule) | resource |
 | [google-beta_google_compute_managed_ssl_certificate.default](https://registry.terraform.io/providers/hashicorp/google-beta/latest/docs/resources/google_compute_managed_ssl_certificate) | resource |
+| [google_compute_global_forwarding_rule.http](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_global_forwarding_rule) | resource |
+| [google_compute_global_forwarding_rule.https](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_global_forwarding_rule) | resource |
 | [google_compute_ssl_certificate.default](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_ssl_certificate) | resource |
 | [google_compute_target_http_proxy.default](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_target_http_proxy) | resource |
 | [google_compute_target_https_proxy.default](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_target_https_proxy) | resource |
 | [google_compute_url_map.default](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_url_map) | resource |
 | [google_compute_url_map.https_redirect](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_url_map) | resource |
 | [random_id.certificate](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/id) | resource |
+| [var_google_compute_backend_service.default](https://registry.terraform.io/providers/hashicorp/var/latest/docs/resources/google_compute_backend_service) | resource |
 
 ## Inputs
 
@@ -49,7 +47,7 @@ No modules.
 | <a name="input_create_ipv6_address"></a> [create\_ipv6\_address](#input\_create\_ipv6\_address) | Allocate a new IPv6 address. Conflicts with "ipv6\_address" - if both specified, "create\_ipv6\_address" takes precedence. | `bool` | `false` | no |
 | <a name="input_create_url_map"></a> [create\_url\_map](#input\_create\_url\_map) | Set to `false` if url\_map variable is provided. | `bool` | `true` | no |
 | <a name="input_enable_ipv6"></a> [enable\_ipv6](#input\_enable\_ipv6) | Enable IPv6 address on the CDN load-balancer | `bool` | `false` | no |
-| <a name="input_group"></a> [group](#input\_group) | n/a | `string` | `""` | no |
+| <a name="input_group"></a> [group](#input\_group) | The nwork group | `string` | `""` | no |
 | <a name="input_http_forward"></a> [http\_forward](#input\_http\_forward) | Set to `false` to disable HTTP port 80 forward | `bool` | `true` | no |
 | <a name="input_https_redirect"></a> [https\_redirect](#input\_https\_redirect) | Set to `true` to enable https redirect on the lb. | `bool` | `false` | no |
 | <a name="input_ipv6_address"></a> [ipv6\_address](#input\_ipv6\_address) | An existing IPv6 address to use (the actual IP address value) | `string` | `null` | no |

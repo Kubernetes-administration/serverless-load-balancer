@@ -4,7 +4,6 @@ module "lb-http" {
   project = var.project
   name    = "${var.project}-lb"
 
-  # ssl                             = true
   ssl                             = false
   managed_ssl_certificate_domains = ["your-domain.com"]
   https_redirect                  = true
@@ -24,8 +23,6 @@ module "lb-http" {
 
       groups = [
         {
-          # Your serverless service should have a NEG created that's referenced here.
-          # group = google_compute_region_network_endpoint_group.cloudrun_neg.id
           group = module.network_group.endpoint
         }
       ]
@@ -40,8 +37,8 @@ module "lb-http" {
 }
 
 module "network_group" {
+  source = "../cloud-run"
 
-  source                = "../cloud-run"
   project               = var.project
   name                  = var.name
   network_endpoint_type = var.network_endpoint_type

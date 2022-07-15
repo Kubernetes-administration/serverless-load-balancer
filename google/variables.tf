@@ -166,5 +166,6 @@ variable "labels" {
 
 variable "group" {
   type    = string
+  description = "The nwork group"
   default = ""
 }

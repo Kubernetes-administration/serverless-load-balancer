@@ -1,16 +1,5 @@
-locals {
-  address      = var.create_address ? join("", google_compute_global_address.default.*.address) : var.address
-  ipv6_address = var.create_ipv6_address ? join("", google_compute_global_address.default_ipv6.*.address) : var.ipv6_address
-
-  url_map             = var.create_url_map ? join("", google_compute_url_map.default.*.self_link) : var.url_map
-  create_http_forward = var.http_forward || var.https_redirect
-
-  health_checked_backends = {}
-}
-
 ### IPv4 block ###
 resource "google_compute_global_forwarding_rule" "http" {
-  provider   = google-beta
   project    = var.project
   count      = local.create_http_forward ? 1 : 0
   name       = var.name
@@ -21,7 +10,6 @@ resource "google_compute_global_forwarding_rule" "http" {
 }
 
 resource "google_compute_global_forwarding_rule" "https" {
-  provider   = google-beta
   project    = var.project
   count      = var.ssl ? 1 : 0
   name       = "${var.name}-https"
@@ -40,39 +28,6 @@ resource "google_compute_global_address" "default" {
   labels     = var.labels
 }
 ### IPv4 block ###
-
-### IPv6 block ###
-resource "google_compute_global_forwarding_rule" "http_ipv6" {
-  provider   = google-beta
-  project    = var.project
-  count      = (var.enable_ipv6 && local.create_http_forward) ? 1 : 0
-  name       = "${var.name}-ipv6-http"
-  target     = google_compute_target_http_proxy.default[0].self_link
-  ip_address = local.ipv6_address
-  port_range = "80"
-  labels     = var.labels
-}
-
-resource "google_compute_global_forwarding_rule" "https_ipv6" {
-  provider   = google-beta
-  project    = var.project
-  count      = (var.enable_ipv6 && var.ssl) ? 1 : 0
-  name       = "${var.name}-ipv6-https"
-  target     = google_compute_target_https_proxy.default[0].self_link
-  ip_address = local.ipv6_address
-  port_range = "443"
-  labels     = var.labels
-}
-
-resource "google_compute_global_address" "default_ipv6" {
-  provider   = google-beta
-  count      = (var.enable_ipv6 && var.create_ipv6_address) ? 1 : 0
-  project    = var.project
-  name       = "${var.name}-ipv6-address"
-  ip_version = "IPV6"
-  labels     = var.labels
-}
-### IPv6 block ###
 
 # HTTP proxy when http forwarding is true
 resource "google_compute_target_http_proxy" "default" {
@@ -117,7 +72,6 @@ resource "random_id" "certificate" {
 }
 
 resource "google_compute_managed_ssl_certificate" "default" {
-  provider = google-beta
   project  = var.project
   count    = var.ssl && length(var.managed_ssl_certificate_domains) > 0 && !var.use_ssl_certificates ? 1 : 0
   name     = var.random_certificate_suffix == true ? random_id.certificate[0].hex : "${var.name}-cert"
@@ -150,13 +104,9 @@ resource "google_compute_url_map" "https_redirect" {
 }
 
 resource "google_compute_backend_service" "default" {
-  provider = google-beta
-
-  for_each = var.backends
-
   project = var.project
+  for_each = var.backends
   name    = "${var.name}-backend-${each.key}"
-
 
   description                     = lookup(each.value, "description", null)
   connection_draining_timeout_sec = lookup(each.value, "connection_draining_timeout_sec", null)
