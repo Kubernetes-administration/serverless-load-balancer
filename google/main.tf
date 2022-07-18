@@ -1,5 +1,4 @@
 resource "google_compute_global_forwarding_rule" "http" {
-  provider   = google-beta
   project    = var.project
   count      = local.create_http_forward ? 1 : 0
   name       = var.name
@@ -10,7 +9,6 @@ resource "google_compute_global_forwarding_rule" "http" {
 }
 
 resource "google_compute_global_forwarding_rule" "https" {
-  provider   = google-beta
   project    = var.project
   count      = var.ssl ? 1 : 0
   name       = "${var.name}-https"
@@ -21,12 +19,10 @@ resource "google_compute_global_forwarding_rule" "https" {
 }
 
 resource "google_compute_global_address" "default" {
-  provider   = google-beta
   count      = var.create_address ? 1 : 0
   project    = var.project
   name       = "${var.name}-global-address"
   ip_version = "IPV4"
-  labels     = var.labels
 }
 
 resource "google_compute_target_http_proxy" "default" {
@@ -60,7 +56,6 @@ resource "google_compute_ssl_certificate" "default" {
 }
 
 resource "google_compute_managed_ssl_certificate" "default" {
-  provider = google-beta
   project  = var.project
   count    = var.ssl && length(var.managed_ssl_certificate_domains) > 0 && !var.use_ssl_certificates ? 1 : 0
   name     = "cert"
@@ -99,15 +94,12 @@ resource "google_compute_backend_service" "default" {
   enable_cdn                      = lookup(each.value, "enable_cdn", false)
   custom_request_headers          = lookup(each.value, "custom_request_headers", [])
   custom_response_headers         = lookup(each.value, "custom_response_headers", [])
-
-  # To achieve a null backend security_policy, set each.value.security_policy to "" (empty string), otherwise, it fallsback to var.security_policy.
   security_policy = lookup(each.value, "security_policy") == "" ? null : (lookup(each.value, "security_policy") == null ? var.security_policy : each.value.security_policy)
 
   dynamic "backend" {
     for_each = toset(each.value["groups"])
     content {
       description = lookup(backend.value, "description", null)
-      # group       = lookup(backend.value, "group")
       group = google_compute_region_network_endpoint_group.default.id
 
     }
