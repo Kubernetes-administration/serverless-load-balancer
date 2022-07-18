@@ -1,5 +1,0 @@
-project               = "gcp-terraform-env"
-name                  = "cloudrun-neg"
-network_endpoint_type = "SERVERLESS"
-region                = "us-central1"
-image                 = "us-docker.pkg.dev/cloudrun/container/hello"

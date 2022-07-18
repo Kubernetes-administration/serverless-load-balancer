@@ -168,3 +168,15 @@ variable "group" {
   type    = string
   default = ""
 }
+
+variable "network_endpoint_type" {
+  type = string
+}
+
+variable "region" {
+  type = string
+}
+
+variable "image" {
+  type = string
+}

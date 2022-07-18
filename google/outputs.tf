@@ -23,3 +23,7 @@ output "url_map" {
   description = "The default URL map used by this module."
   value       = google_compute_url_map.default[*].self_link
 }
+
+output "endpoint" {
+  value = google_compute_region_network_endpoint_group.default.id
+}
