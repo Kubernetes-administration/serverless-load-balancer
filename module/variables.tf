@@ -22,33 +22,9 @@ variable "image" {
   type = string
 }
 
-variable "backends" {
-  description = "Map backend indices to list of backend maps."
-  type = map(object({
-
-    description             = string
-    enable_cdn              = bool
-    security_policy         = string
-    custom_request_headers  = list(string)
-    custom_response_headers = list(string)
-
-
-
-    log_config = object({
-      enable      = bool
-      sample_rate = number
-    })
-
-    groups = list(object({
-      group = string
-
-    }))
-    iap_config = object({
-      enable               = bool
-      oauth2_client_id     = string
-      oauth2_client_secret = string
-    })
-  }))
+variable "enable_cdn" {
+  type        = bool
+  description = "value"
 }
 
 variable "managed_ssl_certificate_domains" {
@@ -68,5 +44,20 @@ variable "https_port_range" {
 
 variable "ip_version" {
   type        = string
+  description = "value"
+}
+
+variable "https_redirect" {
+  type        = bool
+  description = "value"
+}
+
+variable "redirect_response_code" {
+  type        = string
+  description = "value"
+}
+
+variable "strip_query" {
+  type        = bool
   description = "value"
 }

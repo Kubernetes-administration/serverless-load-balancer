@@ -20,54 +20,6 @@ variable "address" {
   default     = null
 }
 
-variable "enable_ipv6" {
-  type        = bool
-  description = "Enable IPv6 address on the CDN load-balancer"
-  default     = false
-}
-
-variable "create_ipv6_address" {
-  type        = bool
-  description = "Allocate a new IPv6 address. Conflicts with \"ipv6_address\" - if both specified, \"create_ipv6_address\" takes precedence."
-  default     = false
-}
-
-variable "ipv6_address" {
-  type        = string
-  description = "An existing IPv6 address to use (the actual IP address value)"
-  default     = null
-}
-
-
-variable "backends" {
-  description = "Map backend indices to list of backend maps."
-  type = map(object({
-
-    description             = string
-    enable_cdn              = bool
-    security_policy         = string
-    custom_request_headers  = list(string)
-    custom_response_headers = list(string)
-
-
-
-    log_config = object({
-      enable      = bool
-      sample_rate = number
-    })
-
-    groups = list(object({
-      group = string
-
-    }))
-    iap_config = object({
-      enable               = bool
-      oauth2_client_id     = string
-      oauth2_client_secret = string
-    })
-  }))
-}
-
 variable "create_url_map" {
   description = "Set to `false` if url_map variable is provided."
   type        = bool
@@ -134,26 +86,8 @@ variable "ssl_certificates" {
   default     = []
 }
 
-variable "security_policy" {
-  description = "The resource URL for the security policy to associate with the backend service"
-  type        = string
-  default     = null
-}
-
-variable "cdn" {
-  description = "Set to `true` to enable cdn on backend."
-  type        = bool
-  default     = false
-}
-
 variable "https_redirect" {
   description = "Set to `true` to enable https redirect on the lb."
-  type        = bool
-  default     = false
-}
-
-variable "random_certificate_suffix" {
-  description = "Bool to enable/disable random certificate name generation. Set and keep this to true if you need to change the SSL cert."
   type        = bool
   default     = false
 }
@@ -162,11 +96,6 @@ variable "labels" {
   description = "The labels to attach to resources created by this module"
   type        = map(string)
   default     = {}
-}
-
-variable "group" {
-  type    = string
-  default = ""
 }
 
 variable "network_endpoint_type" {
@@ -196,5 +125,20 @@ variable "https_port_range" {
 
 variable "ip_version" {
   type        = string
+  description = "value"
+}
+
+variable "enable_cdn" {
+  type        = bool
+  description = "value"
+}
+
+variable "redirect_response_code" {
+  type        = string
+  description = "value"
+}
+
+variable "strip_query" {
+  type        = bool
   description = "value"
 }

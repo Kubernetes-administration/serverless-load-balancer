@@ -8,9 +8,11 @@ module "lb-http" {
   image                           = var.image
   ssl                             = false
   managed_ssl_certificate_domains = ["your-domain.com"]
-  https_redirect                  = true
-  backends                        = var.backends
   http_port_range                 = var.http_port_range
   https_port_range                = var.https_port_range
   ip_version                      = var.ip_version
+  enable_cdn                      = var.enable_cdn
+  https_redirect                  = var.https_redirect
+  redirect_response_code          = var.redirect_response_code
+  strip_query                     = var.strip_query
 }

@@ -71,7 +71,7 @@ resource "google_compute_url_map" "default" {
   project         = var.project
   count           = var.create_url_map ? 1 : 0
   name            = "${var.name}-url-map-default"
-  default_service = google_compute_backend_service.default[keys(var.backends)[0]].self_link
+  default_service = google_compute_backend_service.default.self_link
 }
 
 resource "google_compute_url_map" "https_redirect" {
@@ -86,39 +86,11 @@ resource "google_compute_url_map" "https_redirect" {
 }
 
 resource "google_compute_backend_service" "default" {
-  project                         = var.project
-  for_each                        = var.backends
-  name                            = "${var.name}-backend-${each.key}"
-  description                     = lookup(each.value, "description", null)
-  connection_draining_timeout_sec = lookup(each.value, "connection_draining_timeout_sec", null)
-  enable_cdn                      = lookup(each.value, "enable_cdn", false)
-  custom_request_headers          = lookup(each.value, "custom_request_headers", [])
-  custom_response_headers         = lookup(each.value, "custom_response_headers", [])
-  security_policy                 = lookup(each.value, "security_policy") == "" ? null : (lookup(each.value, "security_policy") == null ? var.security_policy : each.value.security_policy)
-
-  dynamic "backend" {
-    for_each = toset(each.value["groups"])
-    content {
-      description = lookup(backend.value, "description", null)
-      group       = google_compute_region_network_endpoint_group.default.id
-
-    }
-  }
-
-  dynamic "log_config" {
-    for_each = lookup(lookup(each.value, "log_config", {}), "enable", true) ? [1] : []
-    content {
-      enable      = lookup(lookup(each.value, "log_config", {}), "enable", true)
-      sample_rate = lookup(lookup(each.value, "log_config", {}), "sample_rate", "1.0")
-    }
-  }
-
-  dynamic "iap" {
-    for_each = lookup(lookup(each.value, "iap_config", {}), "enable", false) ? [1] : []
-    content {
-      oauth2_client_id     = lookup(lookup(each.value, "iap_config", {}), "oauth2_client_id", "")
-      oauth2_client_secret = lookup(lookup(each.value, "iap_config", {}), "oauth2_client_secret", "")
-    }
+  project    = var.project
+  name       = "${var.project}-backend-service"
+  enable_cdn = var.enable_cdn
+  backend {
+    group = google_compute_region_network_endpoint_group.default.id
   }
 }
 
