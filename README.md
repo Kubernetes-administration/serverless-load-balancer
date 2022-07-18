@@ -48,13 +48,12 @@ module "lb-http" {
 }
 
 ```
+
 ## Modules
 
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module_lb-http"></a> [lb-http](#module\_lb-http) | ../google/ | n/a |
-| <a name="module_network_group"></a> [network\_group](#module\_network\_group) | ../cloud-run | n/a |
-
 
 ## Inputs
 
@@ -66,3 +65,5 @@ module "lb-http" {
 | <a name="input_network_endpoint_type"></a> [network\_endpoint\_type](#input\_network\_endpoint\_type) | n/a | `string` | n/a | yes |
 | <a name="input_project"></a> [project](#input\_project) | n/a | `string` | n/a | yes |
 | <a name="input_region"></a> [region](#input\_region) | n/a | `string` | n/a | yes |
+
+---
