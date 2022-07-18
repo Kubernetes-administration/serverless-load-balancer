@@ -35,7 +35,7 @@ resource "google_compute_global_address" "default" {
   provider   = google-beta
   count      = var.create_address ? 1 : 0
   project    = var.project
-  name       = "${var.name}-address"
+  name       = "${var.name}-global-address"
   ip_version = "IPV4"
   labels     = var.labels
 }
@@ -134,14 +134,14 @@ resource "google_compute_managed_ssl_certificate" "default" {
 resource "google_compute_url_map" "default" {
   project         = var.project
   count           = var.create_url_map ? 1 : 0
-  name            = "${var.name}-url-map"
+  name            = "${var.name}-url-map-default"
   default_service = google_compute_backend_service.default[keys(var.backends)[0]].self_link
 }
 
 resource "google_compute_url_map" "https_redirect" {
   project = var.project
   count   = var.https_redirect ? 1 : 0
-  name    = "${var.name}-https-redirect"
+  name    = "${var.name}-url-map-https-redirect"
   default_url_redirect {
     https_redirect         = true
     redirect_response_code = "MOVED_PERMANENTLY_DEFAULT"
