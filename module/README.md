@@ -11,7 +11,6 @@ No providers.
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module_lb-http"></a> [lb-http](#module\_lb-http) | ../google/ | n/a |
-| <a name="module_network_group"></a> [network\_group](#module\_network\_group) | ../cloud-run | n/a |
 
 ## Resources
 

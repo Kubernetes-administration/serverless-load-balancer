@@ -130,8 +130,6 @@ resource "google_compute_backend_service" "default" {
   }
 }
 
-
-// Cloud Run Example
 resource "google_compute_region_network_endpoint_group" "default" {
   project               = var.project
   name                  = var.name
@@ -146,7 +144,6 @@ resource "google_cloud_run_service" "default" {
   project  = var.project
   name     = var.name
   location = var.region
-
   template {
     spec {
       containers {
@@ -154,7 +151,6 @@ resource "google_cloud_run_service" "default" {
       }
     }
   }
-
   traffic {
     percent         = 100
     latest_revision = true
