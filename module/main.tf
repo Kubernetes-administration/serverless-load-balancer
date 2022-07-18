@@ -38,4 +38,3 @@ module "lb-http" {
     }
   }
 }
-
