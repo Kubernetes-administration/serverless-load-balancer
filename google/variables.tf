@@ -170,13 +170,31 @@ variable "group" {
 }
 
 variable "network_endpoint_type" {
-  type = string
+  type        = string
+  description = "value"
 }
 
 variable "region" {
-  type = string
+  type        = string
+  description = "value"
 }
 
 variable "image" {
-  type = string
+  type        = string
+  description = "value"
+}
+
+variable "http_port_range" {
+  type        = string
+  description = "value"
+}
+
+variable "https_port_range" {
+  type        = string
+  description = "value"
+}
+
+variable "ip_version" {
+  type        = string
+  description = "value"
 }

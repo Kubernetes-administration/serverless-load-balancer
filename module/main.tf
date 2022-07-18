@@ -10,4 +10,7 @@ module "lb-http" {
   managed_ssl_certificate_domains = ["your-domain.com"]
   https_redirect                  = true
   backends                        = var.backends
+  http_port_range                 = var.http_port_range
+  https_port_range                = var.https_port_range
+  ip_version                      = var.ip_version
 }

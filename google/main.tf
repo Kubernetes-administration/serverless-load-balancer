@@ -4,7 +4,7 @@ resource "google_compute_global_forwarding_rule" "http" {
   name       = var.name
   target     = google_compute_target_http_proxy.default[0].self_link
   ip_address = local.address
-  port_range = "80"
+  port_range = var.http_port_range
   labels     = var.labels
 }
 
@@ -14,7 +14,7 @@ resource "google_compute_global_forwarding_rule" "https" {
   name       = "${var.name}-https"
   target     = google_compute_target_https_proxy.default[0].self_link
   ip_address = local.address
-  port_range = "443"
+  port_range = var.https_port_range
   labels     = var.labels
 }
 
@@ -22,7 +22,7 @@ resource "google_compute_global_address" "default" {
   count      = var.create_address ? 1 : 0
   project    = var.project
   name       = "${var.name}-global-address"
-  ip_version = "IPV4"
+  ip_version = var.ip_version
 }
 
 resource "google_compute_target_http_proxy" "default" {
@@ -56,9 +56,9 @@ resource "google_compute_ssl_certificate" "default" {
 }
 
 resource "google_compute_managed_ssl_certificate" "default" {
-  project  = var.project
-  count    = var.ssl && length(var.managed_ssl_certificate_domains) > 0 && !var.use_ssl_certificates ? 1 : 0
-  name     = "cert"
+  project = var.project
+  count   = var.ssl && length(var.managed_ssl_certificate_domains) > 0 && !var.use_ssl_certificates ? 1 : 0
+  name    = "cert"
   lifecycle {
     create_before_destroy = true
   }
@@ -94,13 +94,13 @@ resource "google_compute_backend_service" "default" {
   enable_cdn                      = lookup(each.value, "enable_cdn", false)
   custom_request_headers          = lookup(each.value, "custom_request_headers", [])
   custom_response_headers         = lookup(each.value, "custom_response_headers", [])
-  security_policy = lookup(each.value, "security_policy") == "" ? null : (lookup(each.value, "security_policy") == null ? var.security_policy : each.value.security_policy)
+  security_policy                 = lookup(each.value, "security_policy") == "" ? null : (lookup(each.value, "security_policy") == null ? var.security_policy : each.value.security_policy)
 
   dynamic "backend" {
     for_each = toset(each.value["groups"])
     content {
       description = lookup(backend.value, "description", null)
-      group = google_compute_region_network_endpoint_group.default.id
+      group       = google_compute_region_network_endpoint_group.default.id
 
     }
   }

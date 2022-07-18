@@ -1,9 +1,14 @@
-project               = "gcp-terraform-env"
-group                 = "value"
-name                  = "cloudrun-neg"
-network_endpoint_type = "SERVERLESS"
-region                = "us-central1"
-image                 = "us-docker.pkg.dev/cloudrun/container/hello"
+project                         = "gcp-terraform-env"
+group                           = ""
+name                            = "cloudrun-neg"
+network_endpoint_type           = "SERVERLESS"
+region                          = "us-central1"
+image                           = "us-docker.pkg.dev/cloudrun/container/hello"
+managed_ssl_certificate_domains = ["your-domain.com"]
+http_port_range                 = "80"
+https_port_range                = "443"
+ip_version                      = "IPV4"
+
 backends = {
   default = {
     description             = null

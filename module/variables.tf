@@ -22,7 +22,6 @@ variable "image" {
   type = string
 }
 
-
 variable "backends" {
   description = "Map backend indices to list of backend maps."
   type = map(object({
@@ -50,4 +49,24 @@ variable "backends" {
       oauth2_client_secret = string
     })
   }))
+}
+
+variable "managed_ssl_certificate_domains" {
+  type        = list(string)
+  description = "value"
+}
+
+variable "http_port_range" {
+  type        = string
+  description = "value"
+}
+
+variable "https_port_range" {
+  type        = string
+  description = "value"
+}
+
+variable "ip_version" {
+  type        = string
+  description = "value"
 }
