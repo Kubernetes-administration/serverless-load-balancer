@@ -79,20 +79,11 @@ resource "google_compute_url_map" "https_redirect" {
   count   = var.https_redirect ? 1 : 0
   name    = "${var.name}-url-map-https-redirect"
   default_url_redirect {
-    https_redirect         = true
-    redirect_response_code = "MOVED_PERMANENTLY_DEFAULT"
-    strip_query            = false
+    https_redirect         = var.https_redirect
+    redirect_response_code = var.redirect_response_code
+    strip_query            = var.strip_query
   }
 }
-
-# resource "google_compute_backend_service" "default" {
-#   project    = var.project
-#   name       = "${var.project}-backend-service"
-#   enable_cdn = var.enable_cdn
-#   backend {
-#     group = google_compute_region_network_endpoint_group.default.id
-#   }
-# }
 
 resource "google_compute_backend_bucket" "image_backend" {
   project     = var.project
