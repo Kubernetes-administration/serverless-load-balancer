@@ -7,7 +7,7 @@ module "lb-http" {
   region                          = var.region
   image                           = var.image
   ssl                             = false
-  managed_ssl_certificate_domains = ["your-domain.com"]
+  managed_ssl_certificate_domains = var.managed_ssl_certificate_domains
   http_port_range                 = var.http_port_range
   https_port_range                = var.https_port_range
   ip_version                      = var.ip_version

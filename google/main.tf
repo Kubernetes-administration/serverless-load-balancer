@@ -71,7 +71,7 @@ resource "google_compute_url_map" "default" {
   project         = var.project
   count           = var.create_url_map ? 1 : 0
   name            = "${var.name}-url-map-default"
-  default_service = google_compute_backend_service.default.self_link
+  default_service = google_compute_backend_bucket.image_backend.self_link
 }
 
 resource "google_compute_url_map" "https_redirect" {
@@ -85,38 +85,24 @@ resource "google_compute_url_map" "https_redirect" {
   }
 }
 
-resource "google_compute_backend_service" "default" {
-  project    = var.project
-  name       = "${var.project}-backend-service"
-  enable_cdn = var.enable_cdn
-  backend {
-    group = google_compute_region_network_endpoint_group.default.id
-  }
+# resource "google_compute_backend_service" "default" {
+#   project    = var.project
+#   name       = "${var.project}-backend-service"
+#   enable_cdn = var.enable_cdn
+#   backend {
+#     group = google_compute_region_network_endpoint_group.default.id
+#   }
+# }
+
+resource "google_compute_backend_bucket" "image_backend" {
+  project     = var.project
+  name        = "${var.project}-backend-bucket"
+  bucket_name = google_storage_bucket.image_bucket.name
+  enable_cdn  = var.enable_cdn
 }
 
-resource "google_compute_region_network_endpoint_group" "default" {
-  project               = var.project
-  name                  = var.name
-  network_endpoint_type = var.network_endpoint_type
-  region                = var.region
-  cloud_run {
-    service = google_cloud_run_service.default.name
-  }
-}
-
-resource "google_cloud_run_service" "default" {
+resource "google_storage_bucket" "image_bucket" {
   project  = var.project
   name     = var.name
-  location = var.region
-  template {
-    spec {
-      containers {
-        image = var.image
-      }
-    }
-  }
-  traffic {
-    percent         = 100
-    latest_revision = true
-  }
+  location = var.location
 }

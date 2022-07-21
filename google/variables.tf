@@ -142,3 +142,9 @@ variable "strip_query" {
   type        = bool
   description = "value"
 }
+
+variable "location" {
+  type        = string
+  description = "value"
+  default     = ""
+}
